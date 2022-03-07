@@ -13,6 +13,7 @@
     "axios": "^0.26.0",
     "cheerio": "^1.0.0-rc.10",
     "fs": "^0.0.1-security",
+    "mongoose": "^6.2.4",
     "pretty": "^2.0.0"
   }
 }

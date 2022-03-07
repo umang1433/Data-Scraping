@@ -2,6 +2,22 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const pretty = require("pretty");
 const fs = require("fs");
+const mongoose = require('mongoose');
+const User = require('./model/AllActiveCases');
+
+const uri = 'mongodb://localhost:27017/DataScraping';
+
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => {
+        console.log('MongoDB Connected…')
+    })
+    .catch(err => console.log(err))
+
+
+
 
 const url = "http://www.kccllc.net/";
 
@@ -22,8 +38,19 @@ async function scrapeData() {
             Cases.DateFiled = $(el).children("a").children("p.date").text();
 
             AllActiveCases.push(Cases);
-            console.log(AllActiveCases);
+
         });
+        var data1 = AllActiveCases;
+
+        User.collection.insertMany(data1, function (err, docs) {
+            if (err){ 
+                return console.error(err);
+            } else {
+              console.log("Multiple documents inserted to Collection");
+            }
+          });
+
+        console.log(AllActiveCases);
     } catch (err) {
         console.error(err);
     }
